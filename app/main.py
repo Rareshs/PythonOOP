@@ -1,12 +1,14 @@
 # app/main.py
 
-from flask import Flask, render_template_string
+from flask import render_template_string
 from app import create_app
 
 app = create_app()
 
+
 @app.route("/")
 def home():
+
     return render_template_string("""
     <html>
     <head>
@@ -26,6 +28,7 @@ def home():
     </body>
     </html>
     """)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

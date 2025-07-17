@@ -1,6 +1,7 @@
 from flask import Flask
 import os
 
+
 def create_app():
     # Specificăm manual unde se află template-urile
     base_dir = os.path.abspath(os.path.dirname(__file__))

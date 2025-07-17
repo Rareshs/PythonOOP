@@ -1,8 +1,8 @@
 from flask import Blueprint
-from app.db.database import database 
+from app.db.database import database
 from flask import render_template
-
 logs_bp = Blueprint("logs", __name__)
+
 
 @logs_bp.route("/logs", methods=["GET"])
 async def get_logs():

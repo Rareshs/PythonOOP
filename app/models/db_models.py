@@ -2,11 +2,9 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
-import pytz
+
 
 db = SQLAlchemy()
-
-RO_TZ = pytz.timezone("Europe/Bucharest")
 
 
 class LogEntry(db.Model):

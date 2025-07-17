@@ -6,12 +6,14 @@ from app.db.database import log_request
 
 math_bp = Blueprint("math", __name__)
 
+
 @math_bp.route("/pow", methods=["GET"])
 async def pow_route():
     data = PowRequest(a=int(request.args.get("a")), b=int(request.args.get("b")))
     result = calculate_pow(data.a, data.b)
     await log_request("/pow", data.model_dump(), {"result": result}, 200)
     return jsonify({"result": result})
+
 
 @math_bp.route("/fibonacci", methods=["GET"])
 async def fibonacci_route():
@@ -20,12 +22,14 @@ async def fibonacci_route():
     await log_request("/fibonacci", data.model_dump(), {"result": result}, 200)
     return jsonify({"result": result})
 
+
 @math_bp.route("/factorial", methods=["GET"])
 async def factorial_route():
     data = FactorialRequest(n=int(request.args.get("n")))
     result = calculate_factorial(data.n)
     await log_request("/factorial", data.model_dump(), {"result": result}, 200)
     return jsonify({"result": result})
+
 
 @math_bp.errorhandler(Exception)
 async def handle_error(error):

@@ -6,8 +6,6 @@ import pytz
 
 db = SQLAlchemy()
 
-RO_TZ = pytz.timezone("Europe/Bucharest")
-
 
 class LogEntry(db.Model):
     __tablename__ = "log_entries"

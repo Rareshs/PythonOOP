@@ -13,3 +13,4 @@ loop.run_until_complete(init_db())
 @app.route("/")
 def home():
     return render_template("home.html")
+

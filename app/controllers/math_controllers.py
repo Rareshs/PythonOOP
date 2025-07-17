@@ -3,6 +3,9 @@ from werkzeug.exceptions import HTTPException
 from app.services.math_services import calculate_pow, calculate_fibonacci, calculate_factorial
 from app.models.schemas import PowRequest, FibonacciRequest, FactorialRequest
 from app.db.database import log_request
+from app.db.database import database 
+from flask import render_template
+
 
 math_bp = Blueprint("math", __name__)
 
@@ -31,6 +34,13 @@ async def factorial_route():
     return jsonify({"result": result})
 
 
+# @math_bp.route("/logs", methods=["GET"])
+# async def get_logs():
+#     query = "SELECT * FROM log_entries ORDER BY timestamp DESC"
+#     rows = await database.fetch_all(query=query)
+#     return render_template("logs.html", logs=rows)
+
+
 @math_bp.errorhandler(Exception)
 async def handle_error(error):
     if isinstance(error, HTTPException):
@@ -40,7 +50,6 @@ async def handle_error(error):
         status_code = 500
         message = str(error)
 
-    # Încearcă să extragi datele requestului, dacă există
     try:
         endpoint = request.path
         request_data = request.args.to_dict()

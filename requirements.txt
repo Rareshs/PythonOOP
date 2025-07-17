@@ -1,5 +1,4 @@
 Flask
-Flask-SQLAlchemy
 pydantic
 flake8
 databases 

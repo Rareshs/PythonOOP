@@ -1,9 +1,14 @@
 # app/main.py
 
+import asyncio
 from flask import render_template_string
 from app import create_app
+from app.db.database import init_db
 
 app = create_app()
+
+# Inițializează baza de date la pornirea aplicației
+asyncio.get_event_loop().run_until_complete(init_db())
 
 
 @app.route("/")
@@ -28,7 +33,3 @@ def home():
     </body>
     </html>
     """)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)

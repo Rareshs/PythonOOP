@@ -1,22 +1,35 @@
 import json
-from flask import Flask
-from app.models.db_models import db, LogEntry
+from databases import Database
+
+DATABASE_URL = "sqlite+aiosqlite:///logs.db"
+database = Database(DATABASE_URL)
 
 
-def init_db(app: Flask):
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///logs.db"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.init_app(app)
+async def init_db():
+    # Creează tabelul dacă nu există
+    query = """
+    CREATE TABLE IF NOT EXISTS log_entries (
+        id INTEGER PRIMARY KEY,
+        endpoint TEXT NOT NULL,
+        request_data TEXT NOT NULL,
+        response_data TEXT NOT NULL,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        status_code INTEGER NOT NULL
+    );
+    """
+    await database.connect()
+    await database.execute(query=query)
 
-    with app.app_context():
-        db.create_all()
 
-
-def log_request(endpoint: str, request_data: dict, response_data: dict):
-    entry = LogEntry(
-        endpoint=endpoint,
-        request_data=json.dumps(request_data),
-        response_data=json.dumps(response_data),
-    )
-    db.session.add(entry)
-    db.session.commit()
+async def log_request(endpoint: str, request_data: dict, response_data: dict, status_code: int):
+    query = """
+    INSERT INTO log_entries (endpoint, request_data, response_data, status_code)
+    VALUES (:endpoint, :request_data, :response_data, :status_code)
+    """
+    values = {
+        "endpoint": endpoint,
+        "request_data": json.dumps(request_data),
+        "response_data": json.dumps(response_data),
+        "status_code": status_code
+    }
+    await database.execute(query=query, values=values)

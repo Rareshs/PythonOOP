@@ -2,3 +2,7 @@ Flask
 Flask-SQLAlchemy
 pydantic
 flake8
+databases 
+aiosqlite
+flask[async]
+hypercorn

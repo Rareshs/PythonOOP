@@ -1,9 +1,12 @@
 # app/models/db_models.py
 
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timezone
+import pytz
 
 db = SQLAlchemy()
+
+RO_TZ = pytz.timezone("Europe/Bucharest")
 
 
 class LogEntry(db.Model):
@@ -13,4 +16,5 @@ class LogEntry(db.Model):
     endpoint = db.Column(db.String(50), nullable=False)
     request_data = db.Column(db.Text, nullable=False)
     response_data = db.Column(db.Text, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    status_code = db.Column(db.Integer, nullable=False)

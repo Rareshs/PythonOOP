@@ -4,12 +4,13 @@ from pydantic import ValidationError
 from app.services.math_services import calculate_pow, calculate_fibonacci, calculate_factorial
 from app.models.schemas import PowRequest, FibonacciRequest, FactorialRequest
 from app.db.database import log_request
+from app.utils.auth_decorator import login_required
 
 
 math_bp = Blueprint("math", __name__)
 
-
 @math_bp.route("/pow", methods=["GET"])
+@login_required
 async def pow_route():
     params = request.args.to_dict()
     data = PowRequest.model_validate(params)
@@ -19,6 +20,7 @@ async def pow_route():
 
 
 @math_bp.route("/fibonacci", methods=["GET"])
+@login_required
 async def fibonacci_route():
     params = request.args.to_dict()
     data = FibonacciRequest.model_validate(params)
@@ -26,8 +28,8 @@ async def fibonacci_route():
     await log_request("/fibonacci", data.model_dump(), {"result": result}, 200)
     return jsonify({"result": result})
 
-
 @math_bp.route("/factorial", methods=["GET"])
+@login_required
 async def factorial_route():
     params = request.args.to_dict()
     data = FactorialRequest.model_validate(params)

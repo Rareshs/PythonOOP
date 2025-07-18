@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Python Math Microservice</title>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">    <style>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
         body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 30px; }
         h1 { color: #333; }
         a { display: block; margin: 10px 0; color: #007BFF; text-decoration: none; }
@@ -10,7 +11,24 @@
 </head>
 <body>
     <h1>🎯 Python Math Microservice</h1>
-    <p>Welcome! Try the following endpoints:</p>
+
+    <!-- Afișare mesaje flash -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+            <li style="color: green;">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if session.user %}
+        <p>Bine ai venit, {{ session.user }}!</p>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+    {% endif %}
+
+    <p>Try the following endpoints:</p>
     <a href="/api/pow?a=2&b=3">pow(2^3)</a>
     <a href="/api/fibonacci?n=6">Fibonacci(6)</a>
     <a href="/api/factorial?n=5">Factorial(5)</a>

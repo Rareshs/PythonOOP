@@ -6,8 +6,10 @@ database = Database(DATABASE_URL)
 
 
 async def init_db():
-    # Creează tabelul dacă nu există
-    query = """
+    await database.connect()
+
+    # Tabel pentru loguri
+    log_query = """
     CREATE TABLE IF NOT EXISTS log_entries (
         id INTEGER PRIMARY KEY,
         endpoint TEXT NOT NULL,
@@ -17,8 +19,18 @@ async def init_db():
         status_code INTEGER NOT NULL
     );
     """
-    await database.connect()
-    await database.execute(query=query)
+    await database.execute(query=log_query)
+
+    # Tabel pentru utilizatori
+    user_query = """
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        username TEXT UNIQUE NOT NULL,
+        hashed_password TEXT NOT NULL,
+        is_admin BOOLEAN DEFAULT 0
+    );
+    """
+    await database.execute(query=user_query)
 
 
 async def log_request(endpoint: str, request_data: dict, response_data: dict, status_code: int):

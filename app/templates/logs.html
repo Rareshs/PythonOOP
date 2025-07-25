@@ -20,6 +20,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>User</th>
                         <th>Endpoint</th>
                         <th>Request Data</th>
                         <th>Response Data</th>
@@ -31,9 +32,10 @@
                     {% for row in logs %}
                     <tr class="{% if row.status_code >= 400 %}table-danger{% elif row.status_code == 200 %}table-success{% endif %}">
                         <td>{{ row.id }}</td>
+                        <td>{{ row.username or '-' }}</td>
                         <td><code>{{ row.endpoint }}</code></td>
                         <td><pre class="mb-0">{{ row.request_data }}</pre></td>
-                        <td><pre class="mb-0">{{ row.response_data }}</pre></td>
+                        <td><pre class="mb-0 small overflow-auto" style="max-height: 80px; white-space: pre-wrap;" title="{{ row.response_data }}">{{ row.response_data }}</pre></td>
                         <td>{{ row.timestamp }}</td>
                         <td>
                             <span class="badge {% if row.status_code == 200 %}bg-success{% elif row.status_code >= 400 %}bg-danger{% else %}bg-secondary{% endif %}">

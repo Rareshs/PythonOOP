@@ -1,5 +1,6 @@
 import json
 from databases import Database
+from flask import session
 
 DATABASE_URL = "sqlite+aiosqlite:///logs.db"
 database = Database(DATABASE_URL)
@@ -16,7 +17,8 @@ async def init_db():
         request_data TEXT NOT NULL,
         response_data TEXT NOT NULL,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-        status_code INTEGER NOT NULL
+        status_code INTEGER NOT NULL,
+        username TEXT
     );
     """
     await database.execute(query=log_query)
@@ -34,14 +36,16 @@ async def init_db():
 
 
 async def log_request(endpoint: str, request_data: dict, response_data: dict, status_code: int):
+    username=session.get("user", "anonymous")
     query = """
-    INSERT INTO log_entries (endpoint, request_data, response_data, status_code)
-    VALUES (:endpoint, :request_data, :response_data, :status_code)
+    INSERT INTO log_entries (endpoint, request_data, response_data, status_code, username)
+    VALUES (:endpoint, :request_data, :response_data, :status_code, :username)
     """
     values = {
         "endpoint": endpoint,
         "request_data": json.dumps(request_data),
         "response_data": json.dumps(response_data),
-        "status_code": status_code
+        "status_code": status_code,
+        "username":username
     }
     await database.execute(query=query, values=values)

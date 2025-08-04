@@ -22,7 +22,7 @@ def calculate_pow(a: int, b: int) -> float:
 @timeit
 @lru_cache(maxsize=None)
 def calculate_fibonacci(n: int) -> int:
-    
+
     if n < 0:
         raise ValueError("Fibonacci is not defined for negative numbers.")
     a, b = 0, 1

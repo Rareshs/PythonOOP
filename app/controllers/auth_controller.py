@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash,get_flashed_messages
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, get_flashed_messages
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.db.database import database
 
 auth_bp = Blueprint("auth", __name__)
+
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 async def register():
@@ -20,16 +21,14 @@ async def register():
         hashed_password = generate_password_hash(password)
         await database.execute(
             "INSERT INTO users (username, hashed_password, is_admin) VALUES (:username, :password, :is_admin)",
-            {"username": username, "password": hashed_password, "is_admin": is_admin}
-        )
-        flash("Registration successful." )
+            {"username": username, "password": hashed_password, "is_admin": is_admin})
+        flash("Registration successful.")
         session["user"] = username
         session["is_admin"] = is_admin
         return redirect(url_for("home"))
 
     # AICI lipsea acest return — e esențial pentru metoda GET
     return render_template("register.html")
-
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])
@@ -52,6 +51,7 @@ async def login():
         return redirect(url_for("auth.login"))
 
     return render_template("login.html")
+
 
 @auth_bp.route("/logout")
 def logout():

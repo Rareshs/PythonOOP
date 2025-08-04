@@ -4,6 +4,7 @@ from app.utils.auth_decorator import login_required, admin_required
 
 logs_bp = Blueprint("logs", __name__)
 
+
 @logs_bp.route("/logs", methods=["GET"])
 @login_required
 @admin_required

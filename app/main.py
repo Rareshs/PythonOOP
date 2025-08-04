@@ -1,5 +1,5 @@
 import asyncio
-from flask import render_template, request, jsonify,session, redirect, url_for
+from flask import render_template, request, jsonify, session, redirect, url_for
 from app import create_app
 from app.db.database import init_db, database, log_request
 

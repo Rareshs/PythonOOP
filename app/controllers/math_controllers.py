@@ -9,6 +9,7 @@ from app.utils.auth_decorator import login_required
 
 math_bp = Blueprint("math", __name__)
 
+
 @math_bp.route("/pow", methods=["GET"])
 @login_required
 async def pow_route():
@@ -27,6 +28,7 @@ async def fibonacci_route():
     result = calculate_fibonacci(data.n)
     await log_request("/fibonacci", data.model_dump(), {"result": result}, 200)
     return jsonify({"result": result})
+
 
 @math_bp.route("/factorial", methods=["GET"])
 @login_required

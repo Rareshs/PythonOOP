@@ -36,7 +36,7 @@ async def init_db():
 
 
 async def log_request(endpoint: str, request_data: dict, response_data: dict, status_code: int):
-    username=session.get("user", "anonymous")
+    username = session.get("user", "anonymous")
     query = """
     INSERT INTO log_entries (endpoint, request_data, response_data, status_code, username)
     VALUES (:endpoint, :request_data, :response_data, :status_code, :username)
@@ -46,6 +46,6 @@ async def log_request(endpoint: str, request_data: dict, response_data: dict, st
         "request_data": json.dumps(request_data),
         "response_data": json.dumps(response_data),
         "status_code": status_code,
-        "username":username
+        "username": username
     }
     await database.execute(query=query, values=values)
